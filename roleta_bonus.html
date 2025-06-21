@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Roleta de Bônus</title>
+  <style>
+    body {
+      background: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    .roleta-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    #seta {
+      width: 0;
+      height: 0;
+      border-left: 30px solid transparent;
+      border-right: 30px solid transparent;
+      border-bottom: 40px solid red;
+      position: absolute;
+      left: -30px;
+      top: 210px;
+      transform: rotate(-90deg);
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: gold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      margin: 100px auto;
+      text-align: left;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .modal-content button {
+      background-color: green;
+      color: white;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #tentativas {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      canvas {
+        width: 90vw;
+        height: 90vw;
+      }
+
+      #seta {
+        top: 45vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="roleta-container">
+    <div id="seta"></div>
+    <canvas id="roleta" width="500" height="500"></canvas>
+    <button id="girar">🎯 GIRAR</button>
+    <p id="tentativas">Tentativas restantes: <span id="contador">2</span></p>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <p id="mensagem-final"></p>
+      <button id="botao-modal">Girar Novamente</button>
+    </div>
+  </div>
+
+  <audio id="som-vitoria" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+
+  <script>
+    const canvas = document.getElementById('roleta');
+    const ctx = canvas.getContext('2d');
+    const girarBtn = document.getElementById('girar');
+    const modal = document.getElementById('modal');
+    const mensagemFinal = document.getElementById('mensagem-final');
+    const botaoModal = document.getElementById('botao-modal');
+    const contadorTexto = document.getElementById('contador');
+    const somVitoria = document.getElementById('som-vitoria');
+
+    const setores = [
+      { label: 'Boa Sorte', cor: 'red' },
+      { label: '10', cor: 'green' },
+      { label: '100', cor: 'blue' },
+      { label: '500', cor: 'yellow' },
+      { label: '1000', cor: 'green' },
+      { label: '5000', cor: 'yellow' },
+      { label: '10000', cor: 'red' },
+      { label: '100', cor: 'blue' },
+    ];
+
+    let tentativas = 2;
+    let etapa = 1;
+    let rodando = false;
+    let grausTotais = 0;
+
+    function desenharRoleta() {
+      const total = setores.length;
+      const angulo = (2 * Math.PI) / total;
+
+      ctx.clearRect(0, 0, 500, 500);
+
+      setores.forEach((setor, i) => {
+        const inicio = i * angulo;
+        ctx.beginPath();
+        ctx.fillStyle = setor.cor;
+        ctx.moveTo(250, 250);
+        ctx.arc(250, 250, 200, inicio, inicio + angulo);
+        ctx.fill();
+
+        // Texto
+        ctx.save();
+        ctx.translate(250, 250);
+        ctx.rotate(inicio + angulo / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "white";
+        ctx.font = "bold 20px Arial";
+        ctx.fillText(setor.label, 180, 10);
+        ctx.restore();
+      });
+    }
+
+    desenharRoleta();
+
+    function girarRoleta() {
+      if (rodando) return;
+      if (tentativas <= 0) return alert("Você não tem mais tentativas.");
+
+      rodando = true;
+      tentativas--;
+      contadorTexto.textContent = tentativas;
+
+      let destinoIndex;
+      if (etapa === 1) {
+        destinoIndex = setores.findIndex(s => s.label === "Boa Sorte");
+      } else if (etapa === 2) {
+        destinoIndex = Math.random() > 0.5 
+          ? setores.findIndex(s => s.label === "5000") 
+          : setores.findIndex(s => s.label === "10000");
+      }
+
+      const anguloPorSetor = 360 / setores.length;
+      const rotacao = (360 * 5) + (destinoIndex * anguloPorSetor);
+
+      grausTotais += rotacao;
+      canvas.style.transition = "transform 4s ease-out";
+      canvas.style.transform = `rotate(${grausTotais}deg)`;
+
+      setTimeout(() => {
+        somVitoria.play();
+
+        if (etapa < 2) {
+          etapa++;
+          mostrarModal(`🎯 Resultado: ${setores[destinoIndex].label}`);
+          rodando = false;
+        } else {
+          mostrarMensagemFinal();
+          rodando = false;
+        }
+      }, 4000);
+    }
+
+    function mostrarModal(texto) {
+      mensagemFinal.innerText = texto;
+      botaoModal.innerText = "Girar Novamente";
+      modal.style.display = "block";
+    }
+
+    function mostrarMensagemFinal() {
+      mensagemFinal.innerHTML = `
+        🎉Resultado 🎉<br><br>
+        Parabéns você receber 5.000 meticais de bônus no seu primeiro depósito.<br><br>
+        Para receber os bônus de boas-vindas, clique no botão abaixo e deposite no mínimo 100 meticais para receber os bônus de boas-vindas até 5000MT.<br><br>
+        ⚠️ Atenção: os bônus só serão entregues para novos apostadores da nova casa de apostas.<br><br>
+        Se já possui uma conta, é necessário que abra uma nova conta, seja um vencedor e pode ganhar até 1.000.000,00 MT.
+      `;
+      botaoModal.innerText = "Registre-se agora";
+      modal.style.display = "block";
+    }
+
+    botaoModal.onclick = () => {
+      modal.style.display = "none";
+
+      if (etapa > 2) {
+        window.location.href = "https://tracking.888africa.com/visit/?bta=36065&brand=bacelabet";
+      }
+    };
+
+    girarBtn.onclick = girarRoleta;
+  </script>
+</body>
+</html>
