@@ -1,52 +1,99 @@
 
-<!DOCTYPE html>
-<html lang="pt">
+<!DOCTYPE html><html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Potex.G</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot Aviator Inteligente</title>
   <style>
-    body, html {
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      height: 100vh;
-      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
-    #timer {
-      background-color: #222;
-      color: #fff;
+    h1 {
+      color: #c10000;
+      margin-bottom: 10px;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
       text-align: center;
-      padding: 12px;
-      font-size: 22px;
-      font-weight: bold;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
     }
-    iframe {
-      width: 100%;
-      height: calc(100% - 50px);
+    #sinal {
+      margin-top: 20px;
+      font-size: 1.1em;
+      color: #333;
+    }
+    button {
+      background-color: #c10000;
+      color: white;
       border: none;
-      margin-top: 50px;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #a00000;
+    }
+    .link-apostar {
+      display: inline-block;
+      margin-top: 25px;
+      background-color: #00a859;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .frase-motivacional {
+      margin-top: 30px;
+      font-style: italic;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <div id="timer">00:00:00</div>
-  <iframe src="https://is.gd/hHdRiZ"></iframe>
+  <div class="container">
+    <h1>Bot Aviator Inteligente</h1>
+    <p>Clique abaixo para gerar um sinal com análise inteligente:</p>
+    <button onclick="gerarSinal()">🎯 Gerar Sinal</button>
+    <div id="sinal"></div><a href="https://www.megagamelive.com/affiliates/?btag=2184909" class="link-apostar" target="_blank">
+  🛫 Apostar Agora
+</a>
 
-  <script>
-    function updateClock() {
-      const now = new Date();
-      const hrs = String(now.getHours()).padStart(2, '0');
-      const mins = String(now.getMinutes()).padStart(2, '0');
-      const secs = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('timer').innerText = `🕒 ${hrs}:${mins}:${secs}`;
+<p class="frase-motivacional">A sorte favorece os preparados!</p>
+
+  </div>  <script>
+    function gerarSinal() {
+      const entradas = [
+        "1.80x", "2.00x", "2.10x", "2.30x", "2.50x"
+      ];
+      const chances = [
+        "83%", "85%", "87%", "90%", "92%"
+      ];
+      const entrada = entradas[Math.floor(Math.random() * entradas.length)];
+      const chance = chances[Math.floor(Math.random() * chances.length)];
+      const agora = new Date();
+      const hora = agora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      document.getElementById("sinal").innerHTML = `
+        <p>📌 <strong>Entrada recomendada:</strong> até <b>${entrada}</b></p>
+        <p>🔥 <strong>Probabilidade de sucesso:</strong> <b>${chance}</b></p>
+        <p>⏰ <strong>Hora do sinal:</strong> ${hora}</p>
+        <p>⚠️ Entrada válida nas <strong>próximas 2 rodadas</strong>.</p>
+      `;
     }
-    setInterval(updateClock, 1000);
-    updateClock();
-  </script>
-</body>
+  </script></body>
 </html>
