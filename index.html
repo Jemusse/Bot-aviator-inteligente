@@ -5,63 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bot Aviator Inteligente</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
-    h1 {
-      color: #c10000;
-      margin-bottom: 10px;
-    }
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-    }
-    #sinal {
-      margin-top: 20px;
-      font-size: 1.1em;
-      color: #333;
-    }
-    button {
-      background-color: #c10000;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    button:hover {
-      background-color: #a00000;
-    }
-    .link-apostar {
-      display: inline-block;
-      margin-top: 25px;
-      background-color: #00a859;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .frase-motivacional {
-      margin-top: 30px;
-      font-style: italic;
-      color: #555;
-    }
+    :root {
+      --vermelho: #c10000;
+      --vermelho-hover: #a00000;
+      --verde: #00a859;
+      --cinza-claro: #f5f5f5;
+      --texto-claro: #555;
+      --texto-escuro: #333;
+    }* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--cinza-claro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+h1 {
+  color: var(--vermelho);
+  font-size: 1.8em;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1rem;
+  color: var(--texto-escuro);
+}
+
+#sinal {
+  margin-top: 20px;
+  font-size: 1.05em;
+  color: var(--texto-escuro);
+}
+
+button {
+  background-color: var(--vermelho);
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: var(--vermelho-hover);
+}
+
+.link-apostar {
+  display: inline-block;
+  margin-top: 25px;
+  background-color: var(--verde);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.link-apostar:hover {
+  background-color: #008c4b;
+}
+
+.frase-motivacional {
+  margin-top: 30px;
+  font-style: italic;
+  color: var(--texto-claro);
+}
+
   </style>
 </head>
 <body>
@@ -77,23 +110,23 @@
 
   </div>  <script>
     function gerarSinal() {
-      const entradas = [
-        "1.80x", "2.00x", "2.10x", "2.30x", "2.50x"
-      ];
-      const chances = [
-        "83%", "85%", "87%", "90%", "92%"
-      ];
+      const entradas = ["1.80x", "2.00x", "2.10x", "2.30x", "2.50x"];
+      const chances = ["83%", "85%", "87%", "90%", "92%"];
+
       const entrada = entradas[Math.floor(Math.random() * entradas.length)];
       const chance = chances[Math.floor(Math.random() * chances.length)];
+
       const agora = new Date();
       const hora = agora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-      document.getElementById("sinal").innerHTML = `
+      const sinalHTML = `
         <p>📌 <strong>Entrada recomendada:</strong> até <b>${entrada}</b></p>
         <p>🔥 <strong>Probabilidade de sucesso:</strong> <b>${chance}</b></p>
         <p>⏰ <strong>Hora do sinal:</strong> ${hora}</p>
         <p>⚠️ Entrada válida nas <strong>próximas 2 rodadas</strong>.</p>
       `;
+
+      document.getElementById("sinal").innerHTML = sinalHTML;
     }
   </script></body>
 </html>
