@@ -21,7 +21,7 @@
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.1);
       text-align: center;
-      max-width: 350px;
+      max-width: 360px;
       width: 100%;
     }
 
@@ -44,6 +44,14 @@
       margin-top: 20px;
       font-size: 1rem;
       color: #333;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.4s ease-in-out;
+    }
+
+    #sinal.mostrar {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .footer {
@@ -52,6 +60,12 @@
       color: #777;
       font-style: italic;
     }
+
+    .contador {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #c10000;
+    }
   </style>
 </head>
 <body>
@@ -59,8 +73,12 @@
   <div class="container">
     <button onclick="gerarSinal()">🎯 Gerar Sinal</button>
     <div id="sinal"></div>
+    <div id="contador" class="contador"></div>
     <div class="footer">Aposte com responsabilidade.</div>
   </div>
+
+  <!-- Som de bip -->
+  <audio id="bip" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
 
   <script>
     function gerarSinal() {
@@ -80,15 +98,28 @@
         <p><b>🎯 Entrada:</b> até <strong>${sinal.entrada}</strong></p>
         <p><b>🔥 Sucesso:</b> <strong>${sinal.chance}</strong></p>
         <p><b>⏰ Hora:</b> ${hora}</p>
-        <p style="color:#c10000;"><b>➡️ Redirecionando para a casa de apostas...</b></p>
       `;
 
-      document.getElementById("sinal").innerHTML = sinalHTML;
+      const sinalEl = document.getElementById("sinal");
+      sinalEl.innerHTML = sinalHTML;
+      sinalEl.classList.add("mostrar");
 
-      // Redireciona após 5 segundos
-      setTimeout(() => {
-        window.location.href = "https://www.megagamelive.com/affiliates/?btag=2184909";
-      }, 5000);
+      // Tocar som
+      document.getElementById("bip").play();
+
+      // Iniciar contagem regressiva
+      let segundos = 5;
+      const contadorEl = document.getElementById("contador");
+      contadorEl.innerText = `➡️ Redirecionando em ${segundos} segundos...`;
+
+      const intervalo = setInterval(() => {
+        segundos--;
+        contadorEl.innerText = `➡️ Redirecionando em ${segundos} segundos...`;
+        if (segundos <= 0) {
+          clearInterval(intervalo);
+          window.location.href = "https://www.megagamelive.com/affiliates/?btag=2184909";
+        }
+      }, 1000);
     }
   </script>
 </body>
