@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bot Aviator Inteligente</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reivindicar Bônus</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #000;
-      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #ffeb3b, #ff9800, #ffcc00);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -17,128 +16,55 @@
     }
 
     .container {
-      background: #111;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 25px rgba(255, 0, 0, 0.2);
       text-align: center;
-      max-width: 380px;
-      width: 100%;
-      border: 1px solid #333;
+      max-width: 400px;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
     }
 
-    button {
-      background-color: #e60000;
-      color: white;
+    .message {
+      font-size: 20px;
+      font-weight: 500;
+      color: #222;
+      margin-bottom: 25px;
+    }
+
+    .button {
+      background: linear-gradient(45deg, #ffcc00, #ffd633, #ffb300);
+      color: #000;
       border: none;
-      padding: 14px 26px;
-      font-size: 1.1rem;
-      border-radius: 8px;
+      padding: 15px 35px;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 10px;
-      animation: vibrar 0.4s infinite;
-      transition: background 0.3s ease-in-out;
-    }
-
-    button:hover {
-      background-color: #b50000;
-    }
-
-    @keyframes vibrar {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-2px); }
-      50% { transform: translateX(2px); }
-      75% { transform: translateX(-2px); }
-      100% { transform: translateX(0); }
-    }
-
-    #sinal {
-      margin-top: 25px;
-      font-size: 1.1rem;
-      color: #eee;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all 0.4s ease-in-out;
-    }
-
-    #sinal.mostrar {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .footer {
-      margin-top: 25px;
-      font-size: 0.9rem;
-      color: #777;
-      font-style: italic;
-    }
-
-    .contador {
-      margin-top: 10px;
+      font-size: 18px;
       font-weight: bold;
-      color: #00ff88;
+      animation: pulse 1.2s infinite;
+      box-shadow: 0 4px 12px rgba(255, 204, 0, 0.6);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .verde { color: #00ff88; }
-    .amarelo { color: #ffcc00; }
-    .vermelho { color: #ff3333; }
+    .button:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 16px rgba(255, 204, 0, 0.9);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <button onclick="gerarSinal()">🎯 Gerar Sinal</button>
-    <div id="sinal"></div>
-    <div id="contador" class="contador"></div>
-    <div class="footer">⚠️ Aposte com responsabilidade.</div>
+    <div class="message">
+      🌧️ Chuvas no seu primeiro registo de 1000 MTS <br> Clica no botão abaixo:
+    </div>
+    <button class="button" onclick="window.location.href='https://txunaplay.com/tbf021a2d'">
+      Ir Reivindicar
+    </button>
   </div>
-
-  <!-- Som de bip -->
-  <audio id="bip" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
-
-  <script>
-    function gerarSinal() {
-      const sinais = [
-        { entrada: "1.80x", chance: "92%", cor: "verde" },
-        { entrada: "2.00x", chance: "90%", cor: "verde" },
-        { entrada: "2.10x", chance: "87%", cor: "amarelo" },
-        { entrada: "2.30x", chance: "85%", cor: "amarelo" },
-        { entrada: "2.50x", chance: "83%", cor: "vermelho" },
-        { entrada: "5.00x",  chance: "75%", cor: "vermelho" },
-        { entrada: "10.00x", chance: "60%", cor: "vermelho" }
-      ];
-
-      const sinal = sinais[Math.floor(Math.random() * sinais.length)];
-      const agora = new Date();
-      const hora = agora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      const sinalHTML = `
-        <p><b>🎯 Entrada:</b> até <span class="${sinal.cor}">${sinal.entrada}</span></p>
-        <p><b>🔥 Sucesso:</b> <span class="${sinal.cor}">${sinal.chance}</span></p>
-        <p><b>⏰ Hora:</b> ${hora}</p>
-      `;
-
-      const sinalEl = document.getElementById("sinal");
-      sinalEl.innerHTML = sinalHTML;
-      sinalEl.classList.add("mostrar");
-
-      // Tocar som
-      document.getElementById("bip").play();
-
-      // Contador regressivo
-      let segundos = 5;
-      const contadorEl = document.getElementById("contador");
-      contadorEl.innerText = `➡️ Redirecionando em ${segundos} segundos...`;
-
-      const intervalo = setInterval(() => {
-        segundos--;
-        contadorEl.innerText = `➡️ Redirecionando em ${segundos} segundos...`;
-        if (segundos <= 0) {
-          clearInterval(intervalo);
-          window.location.href = "https://www.megagamelive.com/affiliates/?btag=2184909";
-        }
-      }, 1000);
-    }
-  </script>
 </body>
-    </html>
+</html>
